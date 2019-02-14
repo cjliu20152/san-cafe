@@ -12,10 +12,11 @@ add_subdirectory(archs)
 add_subdirectory(util)
 
 # Pass options to NVCC
+# for Maxwell arch - GTX 960 CC=5.0 SM5.0 CJLiu
 set(
     CUDA_NVCC_FLAGS
     ${CUDA_NVCC_FLAGS};
-    -O3 -gencode=arch=compute_20,code=sm_21 -Xptxas -v -D_FORCE_INLINES)
+    -O3 -gencode=arch=compute_50,code=sm_50 -Xptxas -v -D_FORCE_INLINES)
 
 list(APPEND cafe_gpu_lib_srcs
      ${CMAKE_CURRENT_SOURCE_DIR}/lib/pfb.cu
@@ -48,8 +49,8 @@ include_directories(
                     ${CMAKE_CURRENT_SOURCE_DIR}/util/include/cafe/
 )
 
-# Build the GPU Device Library with c++98
-set(CMAKE_CXX_FLAGS "-O3 -Wall -g -std=c++98")
+# Build the GPU Device Library with c++11 (was c++98, c++14 failed, CJLiu)
+set(CMAKE_CXX_FLAGS "-O3 -Wall -g -std=c++11")
 cuda_add_library(cafe_gpu SHARED ${cafe_gpu_lib_srcs})
 
 # Build the Host Library with C++14
